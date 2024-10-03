@@ -10,7 +10,7 @@ const BigTen = BigInt(10)
 # To add, convert both decimals to the same exponent.
 # (If the exponents are different, use the smaller exponent
 # to make sure we're adding integers.)
-function +(x::Decimal, y::Decimal)
+function Base.:(+)(x::Decimal, y::Decimal)
     if (x.q < y.q)
         return y + x
     else # x.q ≥ y.q
