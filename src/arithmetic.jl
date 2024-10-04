@@ -32,8 +32,8 @@ Base.:(-)(x::Decimal, y::Decimal) = +(x, -y)
 
 # Multiplication
 function Base.:(*)(x::Decimal, y::Decimal)
-    s = (x.s == y.s) ? 0 : 1
-    normalize(Decimal(s, BigInt(x.c) * BigInt(y.c), x.q + y.q))
+    s = x.s != y.s
+    normalize(Decimal(s, x.c * y.c, x.q + y.q))
 end
 
 # Inversion
