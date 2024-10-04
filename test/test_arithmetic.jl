@@ -1,7 +1,15 @@
 using Decimals
 using Test
+using Supposition
 
 @testset "Arithmetic" begin
+
+DecimalGen = @composed function generate_decimal(
+        s = Data.Integers(0, 1),
+        c = Data.Integers(0, 2^8),
+        q = Data.Integers(-4, 4))
+    Decimal(s, c, q)
+end
 
 @testset "Addition" begin
     @test Decimal(0.1) + 0.2 == 0.1 + Decimal(0.2) == Decimal(0.1) + Decimal(0.2) == Decimal(0.3)
@@ -10,6 +18,20 @@ using Test
     @test Decimal(1,3,-2) + parse(Decimal, "0.2523410412138103") == Decimal(0,2223410412138103,-16)
 
     @test Decimal(0, 10000000000000000001, -19) + Decimal(0, 1, 0) == Decimal(0, 20000000000000000001, -19)
+
+    @testset "Properties" begin
+        @check function add_comutative(x = DecimalGen, y = DecimalGen)
+            return x + y == y + x
+        end
+
+        @check function add_neutral_element(x = DecimalGen)
+            return x + zero(x) == x
+        end
+
+        @check function add_successor(x = DecimalGen)
+            return x + oneunit(x) > x
+        end
+    end
 end
 
 @testset "Subtraction" begin
@@ -17,12 +39,28 @@ end
     @test 0.3 - Decimal(0.1) == Decimal(0.3) - Decimal(0.1)
     @test Decimal(0.3) - Decimal(0.1) == Decimal(0.2)
     @test Decimal.([0.3 0.1]) .- [0.1 0.5] == Decimal.([0.2 -0.4])
+
+    @testset "Properties" begin
+        @check function sub_anticomutative(x = DecimalGen, y = DecimalGen)
+            return x - y == -(y - x)
+        end
+
+        @check function sub_predecessor(x = DecimalGen)
+            return x - oneunit(x) < x
+        end
+    end
 end
 
 @testset "Negation" begin
     @test -Decimal.([0.3 0.2]) == [-Decimal(0.3) -Decimal(0.2)]
     @test -Decimal(0.3) == zero(Decimal) - Decimal(0.3)
     @test iszero(decimal(12.1) - decimal(12.1))
+
+    @testset "Properties" begin
+        @check function neg_identity(x = DecimalGen)
+            return x == -(-x)
+        end
+    end
 end
 
 @testset "Multiplication" begin
@@ -37,6 +75,24 @@ end
     @test Decimal(0, 2, -1) * 0.0 == zero(Decimal)
     @test Decimal.([0.3, 0.6]) .* 5 == [Decimal(0.3)*5, Decimal(0.6)*5]
     @test one(Decimal) * 1 == Decimal(0, 1, 0)
+
+    @testset "Properties" begin
+        @check function mul_comutative(x = DecimalGen, y = DecimalGen)
+            return x * y == y * x
+        end
+
+        @check function mul_neutral_element(x = DecimalGen)
+            return x * one(x) == x
+        end
+
+        @check function zero_element(x = DecimalGen)
+            return x * zero(x) == zero(x)
+        end
+
+        @check function mul_negation(x = DecimalGen)
+            return -1 * x == -x
+        end
+    end
 end
 
 @testset "Inversion" begin

@@ -11,13 +11,24 @@ export Decimal,
 
 const DIGITS = 20
 
+const PRECISION = Ref(20)
+function Base.setprecision(Decimal, precision::Int)
+    if precision < 1
+        throw(ArgumentError("precision must be at least 1"))
+    end
+    PRECISION[] = precision
+end
+
+
 # Numerical value: (-1)^s * c * 10^q
 struct Decimal <: AbstractFloat
     s::Bool  # sign can be 0 (+) or 1 (-)
     c::BigInt   # coefficient (significand), must be non-negative
     q::Int  # exponent
 
-    Decimal(s::Integer, c::Integer, e::Integer) = new(Bool(s), c, e)
+    function Decimal(s::Integer, c::Integer, e::Integer)
+        new(Bool(s), c, e)
+    end
 end
 
 # Convert between Decimal objects, numbers, and strings

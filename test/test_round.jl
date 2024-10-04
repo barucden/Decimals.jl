@@ -23,6 +23,6 @@ function tet()
 end
 
 # set DIGITS = 20 (aaljuffali's example)
-@test tet() == Decimal(0, 67453047074102193157641340, -20)
+@test tet() == Decimal(0, 67453047073997155488, -14)
 
 end

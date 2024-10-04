@@ -12,6 +12,8 @@ global d = [
     Decimal(true, 4, -6)
 ]
 
+setprecision(Decimal, 20)
+
 include("test_constructor.jl")
 include("test_decimal.jl")
 include("test_norm.jl")
