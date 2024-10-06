@@ -15,14 +15,6 @@ function normalize(x::Decimal; rounded::Bool=false)
     end
 end
 
-
-function mpz_exact_div(x::BigInt, n::Int)
-    return BigInt(x / n)
-end
-function mpz_isdivisible(x::BigInt, n::Int)
-    return (x % n) == 0
-end
-
 # Maximum exponent E such that 10^E is representable in T
 _maxexp(::Type{Int64}) = 18
 _maxexp(::Type{Int32}) = 9
@@ -41,7 +33,7 @@ function normalized(s, c::BigInt, q::Int)
             d *= 10
             q += 1
         end
-        c = mpz_exact_div(c, d)
+        c = mpz_divexact(c, d)
     end
 
     # Make sure precision is respected

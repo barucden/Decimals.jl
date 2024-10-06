@@ -31,6 +31,8 @@ struct Decimal <: AbstractFloat
     end
 end
 
+include("mpz.jl")
+
 # Convert between Decimal objects, numbers, and strings
 include("decimal.jl")
 

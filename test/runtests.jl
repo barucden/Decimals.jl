@@ -23,6 +23,7 @@ global d = [
     Decimal(true, 4, -6)
 ]
 
+include("test_mpz.jl")
 include("test_constructor.jl")
 include("test_decimal.jl")
 include("test_norm.jl")
