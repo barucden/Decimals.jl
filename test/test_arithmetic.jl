@@ -1,15 +1,7 @@
 using Decimals
 using Test
-using Supposition
 
 @testset "Arithmetic" begin
-
-DecimalGen = @composed function generate_decimal(
-        s = Data.Integers(0, 1),
-        c = Data.Integers(0, 2^8),
-        q = Data.Integers(-4, 4))
-    Decimal(s, c, q)
-end
 
 @testset "Addition" begin
     @test Decimal(0.1) + 0.2 == 0.1 + Decimal(0.2) == Decimal(0.1) + Decimal(0.2) == Decimal(0.3)

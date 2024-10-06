@@ -34,6 +34,7 @@ end
     @test decimal(12.1) == decimal(12.1)
 
     @test Decimal(true, 0, -1) == Decimal(false, 0, 0)
+    @test Decimal(false, 0, 0) == Decimal(true, 0, 0)
 end
 
 @testset "<" begin
@@ -94,6 +95,18 @@ end
     @test d == max(d, -Inf) == max(-Inf, d) == max(d, d)
     @test d != Inf
     @test d != NaN
+end
+
+@testset "min/max" begin
+    @check function min_lt(x = DecimalGen, y = DecimalGen)
+        m = min(x, y)
+        return x ≤ y ? x == m : y == m
+    end
+
+    @check function max_lt(x = DecimalGen, y = DecimalGen)
+        m = max(x, y)
+        return x ≤ y ? y == m : x == m
+    end
 end
 
 end

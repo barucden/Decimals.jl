@@ -23,7 +23,6 @@ function mpz_isdivisible(x::BigInt, n::Int)
     return (x % n) == 0
 end
 
-
 # Maximum exponent E such that 10^E is representable in T
 _maxexp(::Type{Int64}) = 18
 _maxexp(::Type{Int32}) = 9
@@ -58,4 +57,4 @@ function normalized(s, c::BigInt, q::Int)
 
     return Decimal(s, c, q)
 end
-
+normalized(x::Decimal) = normalized(x.s, x.c, x.q)
