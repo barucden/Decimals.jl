@@ -11,18 +11,18 @@ const BigTen = BigInt(10)
 # (If the exponents are different, use the smaller exponent
 # to make sure we're adding integers.)
 function Base.:(+)(x::Decimal, y::Decimal)
-    if (x.q < y.q)
-        return y + x
-    else # x.q ≥ y.q
-        # a₁ * 10^q₁ + a₂ * 10^q₂ =
-        # (a₁ * 10^(q₁ - q₂) + a₂) * 10^q₂
-        #  ^^^^^^^^^^^^^^^^^ Integer because q₁ ≥ q₂
-        q = x.q - y.q
-        c = (-1)^(x.s) * x.c * BigTen^q + (-1)^(y.s) * y.c
-        s = Int(signbit(c))
-        #return Decimal(s, abs(c), y.q)
-        return normalized(s, abs(c), y.q)
+    if x.q < y.q
+        x, y = y, x
     end
+    # x.q ≥ y.q
+    # a₁ * 10^q₁ + a₂ * 10^q₂ =
+    # (a₁ * 10^(q₁ - q₂) + a₂) * 10^q₂
+    #  ^^^^^^^^^^^^^^^^^ Integer because q₁ ≥ q₂
+    q = x.q - y.q
+    c = (-1)^(x.s) * x.c * BigTen^q + (-1)^(y.s) * y.c
+    s = Int(signbit(c))
+    #return Decimal(s, abs(c), y.q)
+    return normalized(s, abs(c), y.q)
 end
 
 # Negation
