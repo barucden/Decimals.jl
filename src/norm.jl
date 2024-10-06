@@ -15,9 +15,9 @@ function normalize(x::Decimal; rounded::Bool=false)
     end
 end
 
-# Maximum exponent E such that 10^E is representable in T
-_maxexp(::Type{Int64}) = 18
-_maxexp(::Type{Int32}) = 9
+# Maximum exponent E such that 10^E is representable by Int and Culong
+# (Culong is UInt32 on Windows)
+const MAX_EXP = floor(Int, log(10, min(typemax(Culong), typemax(Int))))
 
 function normalized(s, c::BigInt, q::Int)
     if iszero(c)
@@ -28,7 +28,7 @@ function normalized(s, c::BigInt, q::Int)
     while mpz_isdivisible(c, 10)
         d = 10
         q = q + 1
-        for e in 1:_maxexp(Int)
+        for e in 2:MAX_EXP
             mpz_isdivisible(c, 10 * d) || break
             d *= 10
             q += 1
