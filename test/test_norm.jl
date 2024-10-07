@@ -12,4 +12,14 @@ using Test
 @test parse(Decimal, "3.1400") == Decimal(false, 314, -2)
 @test parse(Decimal, "1234") == Decimal(false, 1234, 0)
 
+@testset "normalized" begin
+    let vals = [(s=true, c=big"1", q=1, expected=Decimal(true, big"1", 1)),
+                (s=true, c=big"10", q=1, expected=Decimal(true, big"1", 2)),
+                (s=true, c=big"1_000_000_000_000_000_000_000", q=1, expected=Decimal(true, big"1", 22))]
+        for (; s, c, q, expected) in vals
+            @test Decimals.normalized(s, c, q) == expected
+        end
+    end
+end
+
 end
