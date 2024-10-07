@@ -52,6 +52,9 @@ end
         @check function neg_identity(x = DecimalGen)
             return x == -(-x)
         end
+        @check function neg_zero(x = DecimalGen)
+            return iszero(x - x)
+        end
     end
 end
 
