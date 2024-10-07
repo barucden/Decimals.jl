@@ -1,20 +1,23 @@
 # Equality
 
+_sign(x::Decimal) = x.s ? -1 : 1
+
 function Base.cmp(x::Decimal, y::Decimal)
-    if iszero(x)
-        if iszero(y)
-            return 0
-        else
-            return y.s ? 1 : -1
-        end
-    else # x != 0
-        if iszero(y)
-            return x.s ? -1 : 1
-        end
+    if iszero(x) && iszero(y)
+        return 0
+    elseif iszero(x) # && !iszero(y)
+        return -_sign(y)
+    elseif iszero(y) # && !iszero(x)
+        return _sign(x)
     end
 
+    # Neither x nor y is zero here
+
     if x.s != y.s
-        return x.s ? -1 : 1
+        # x and y have different signs:
+        #  if x < 0, then return -1 (because y is positive)
+        #  if x > 0, then return +1 (because y is negative)
+        return _sign(x)
     end
 
     x = normalized(x)
@@ -29,7 +32,7 @@ function Base.cmp(x::Decimal, y::Decimal)
         return cmp_c
     else
         d = x - y
-        return d.s ? -1 : 1
+        return _sign(d)
     end
 end
 
