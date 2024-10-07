@@ -21,7 +21,7 @@ const MAX_EXP = floor(Int, log(10, min(typemax(Culong), typemax(Int))))
 
 function normalized(s, c::BigInt, q::Int)
     if iszero(c)
-        return Decimal(s, c, 0)
+        return s, c, 0
     end
 
     # Remove all trailing zeros in c
@@ -47,6 +47,8 @@ function normalized(s, c::BigInt, q::Int)
         q = q + shift
     end
 
-    return Decimal(s, c, q)
+    return s, c, q
 end
-normalized(x::Decimal) = normalized(x.s, x.c, x.q)
+normalized(x::Decimal) = Decimal(normalized(x.s, x.c, x.q)...)
+
+isnormalized(x::Decimal) =  mpz_isdivisible(x.c, 10)

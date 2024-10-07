@@ -21,8 +21,7 @@ function Base.:(+)(x::Decimal, y::Decimal)
     q = x.q - y.q
     c = (-1)^(x.s) * x.c * BigTen^q + (-1)^(y.s) * y.c
     s = Int(signbit(c))
-    #return Decimal(s, abs(c), y.q)
-    return normalized(s, abs(c), y.q)
+    return Decimal(s, abs(c), y.q)
 end
 
 # Negation
@@ -34,7 +33,7 @@ Base.:(-)(x::Decimal, y::Decimal) = +(x, -y)
 # Multiplication
 function Base.:(*)(x::Decimal, y::Decimal)
     s = x.s != y.s
-    return normalized(s, x.c * y.c, x.q + y.q)
+    return Decimal(s, x.c * y.c, x.q + y.q)
 end
 
 # Inversion

@@ -13,13 +13,15 @@ using Test
 @test parse(Decimal, "1234") == Decimal(false, 1234, 0)
 
 @testset "normalized" begin
-    let vals = [(s=true, c=big"1", q=1, expected=Decimal(true, big"1", 1)),
-                (s=true, c=big"10", q=1, expected=Decimal(true, big"1", 2)),
-                (s=true, c=big"1_000_000_000_000_000_000_000", q=1, expected=Decimal(true, big"1", 22))]
-        for (; s, c, q, expected) in vals
-            @test Decimals.normalized(s, c, q) == expected
+    let inputs = [(true, big"1", 1),
+                  (true, big"10", 1),
+                  (true, big"1_000_000_000_000_000_000_000", 1)],
+        outputs = [(true, big"1", 1),
+                   (true, big"1", 2),
+                   (true, big"1", 22)]
+        for (input, output) in zip(inputs, outputs)
+            @test Decimals.normalized(input...) == output
         end
     end
 end
-
 end
