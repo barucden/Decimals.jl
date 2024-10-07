@@ -96,4 +96,31 @@ end
     @test string(number(Decimal(false, 543, -1))) == "54.3"
 end
 
+@testset "iszero" begin
+    @test iszero(Decimal(true, 0, 0))
+    @test iszero(Decimal(true, 0, 1))
+    @test iszero(Decimal(true, 0, -1))
+    @test iszero(Decimal(false, 0, 0))
+    @test iszero(Decimal(false, 0, 1))
+    @test iszero(Decimal(false, 0, -1))
+
+    @test !iszero(Decimal(true, 1, 0))
+    @test !iszero(Decimal(true, 1, 1))
+    @test !iszero(Decimal(true, 1, -1))
+    @test !iszero(Decimal(false, 1, 0))
+    @test !iszero(Decimal(false, 1, 1))
+    @test !iszero(Decimal(false, 1, -1))
 end
+
+@testset "isone" begin
+    @test isone(Decimal(false, 1, 0))
+    @test isone(Decimal(false, 10, -1))
+
+    @test !isone(Decimal(true, 1, 0))
+    @test !isone(Decimal(true, 10, -1))
+    @test !isone(Decimal(false, 1, 1))
+    @test !isone(Decimal(false, 10, 0))
+end
+
+end
+

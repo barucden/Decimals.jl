@@ -81,4 +81,8 @@ end
 # sign
 Base.signbit(x::Decimal) = x.s
 
+Base.iszero(x::Decimal) = iszero(x.c)
+Base.isone(x::Decimal) = !x.s && isone(x.c) && iszero(x.q)
+
+
 Base.show(io::IO, x::Decimal) = write(io, "decimal(\""*string(x)*"\")")

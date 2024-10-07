@@ -43,9 +43,6 @@ Base.:(<=)(x::Decimal, y::Decimal) = cmp(x, y) ≤ 0
 Base.min(x::Decimal, y::Decimal) = x ≤ y ? x : y
 Base.max(x::Decimal, y::Decimal) = x ≤ y ? y : x
 
-Base.iszero(x::Decimal) = iszero(x.c)
-# TODO: Implement isone
-
 # Special case equality with AbstractFloat to allow comparison against Inf/Nan
 # which are not representable in Decimal
 
